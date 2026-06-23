@@ -384,7 +384,6 @@ h1 {
 	min-height: 200px;
 }
 
-/* --- Advanced Habit Tracker Architecture --- */
 .advanced-tracker {
     display: flex;
     flex-direction: column;
@@ -422,7 +421,6 @@ h1 {
     color: var(--text);
 }
 
-/* Form Styles */
 .habit-form-deck {
     display: flex;
     flex-direction: column;
@@ -481,7 +479,6 @@ h1 {
     font-size: 0.85rem;
 }
 
-/* Habit Row Elements & Drop Zones */
 #habit-list {
     display: flex;
     flex-direction: column;
@@ -554,8 +551,8 @@ h1 {
 }
 
 .badge-cat {
-    background: var(--bg-accent);
-    color: var(--muted);
+    background: bg-accent;
+    color: muted;
 }
 
 .habit-content-title {
@@ -566,7 +563,7 @@ h1 {
 
 .is-completed .habit-content-title {
     text-decoration: line-through;
-    color: var(--muted);
+    color: muted;
 }
 
 .habit-right-block {
@@ -589,6 +586,24 @@ h1 {
 .op-edit:hover { background: rgba(82, 148, 226, 0.15); color: #2a6bb8; }
 .op-delete:hover { background: rgba(185, 83, 57, 0.15); color: #b95339; }
 
+#add-habit-btn.action-submit-btn {
+    background: #e6b84a; 
+    color: #1d1b18;
+    border: none;
+    box-shadow: 0 8px 20px rgba(230, 184, 74, 0.2);
+    transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+#add-habit-btn.action-submit-btn:hover {
+    background: #cf9f32; 
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(230, 184, 74, 0.35);
+}
+
+#add-habit-btn.action-submit-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 10px rgba(230, 184, 74, 0.15);
+}
 
 @media (max-width: 920px) {
 	.topbar {

@@ -386,6 +386,211 @@ h1 {
 	min-height: 200px;
 }
 
+/* --- Advanced Habit Tracker Architecture --- */
+.advanced-tracker {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.tracker-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid var(--border);
+	padding-bottom: 14px;
+}
+
+.progress-ring-box {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.progress-ring {
+	transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+	transition: stroke-dashoffset 0.35s ease;
+	transform-origin: 50% 50%;
+}
+
+#progress-text {
+	position: absolute;
+	font-size: 0.78rem;
+	font-weight: 700;
+	color: var(--text);
+}
+
+/* Form Styles */
+.habit-form-deck {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	background: rgba(255, 255, 255, 0.35);
+	padding: 16px;
+	border-radius: 18px;
+	border: 1px solid var(--border);
+}
+
+.input-row-main {
+	display: flex;
+	gap: 8px;
+}
+
+.input-row-meta {
+	display: flex;
+	gap: 14px;
+	align-items: flex-end;
+	flex-wrap: wrap;
+}
+
+.meta-field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	flex: 1;
+	min-width: 100px;
+}
+
+.meta-field label {
+	font-size: 0.72rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	font-weight: 700;
+	color: var(--muted);
+}
+
+.meta-field select {
+	padding: 6px 12px;
+	border-radius: 8px;
+	border: 1px solid var(--border);
+	background: rgba(255, 255, 255, 0.8);
+	font-family: inherit;
+	font-size: 0.85rem;
+	cursor: pointer;
+}
+
+.hidden-btn {
+	display: none;
+	padding: 6px 12px;
+	border-radius: 8px;
+	border: 1px solid var(--border);
+	background: transparent;
+	cursor: pointer;
+	font-size: 0.85rem;
+}
+
+/* Habit Row Elements & Drop Zones */
+#habit-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	max-height: 450px;
+	overflow-y: auto;
+	padding-right: 6px;
+}
+
+.habit-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 14px 18px;
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-left: 5px solid transparent;
+	border-radius: 16px;
+	cursor: grab;
+	user-select: none;
+	transition: all 240ms cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.habit-item:active {
+	cursor: grabbing;
+}
+
+.habit-item.dragging {
+	opacity: 0.4;
+	transform: scale(0.98);
+	background: var(--bg-accent);
+}
+
+.habit-item[data-priority="1"] { border-left-color: #d96b4f; }
+.habit-item[data-priority="2"] { border-left-color: #e6b84a; }
+.habit-item[data-priority="3"] { border-left-color: #5294e2; }
+
+.habit-item.is-completed {
+	opacity: 0.6;
+	background: rgba(255, 255, 255, 0.2);
+	transform: translateY(1px);
+	animation: completePop 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes completePop {
+	0% { transform: scale(1); }
+	50% { transform: scale(1.03); background: rgba(217, 107, 79, 0.1); }
+	100% { transform: scale(1); }
+}
+
+.habit-left-block {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	flex: 1;
+}
+
+.habit-meta-badges {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 4px;
+}
+
+.badge {
+	font-size: 0.68rem;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-weight: 700;
+}
+
+.badge-cat {
+	background: var(--bg-accent);
+	color: var(--muted);
+}
+
+.habit-content-title {
+	font-size: 1.05rem;
+	font-weight: bold;
+	transition: all 200ms ease;
+}
+
+.is-completed .habit-content-title {
+	text-decoration: line-through;
+	color: var(--muted);
+}
+
+.habit-right-block {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.op-btn {
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	font-size: 0.9rem;
+	padding: 6px;
+	border-radius: 8px;
+	transition: background-color 140ms ease;
+}
+
+.op-edit:hover { background: rgba(82, 148, 226, 0.15); color: #2a6bb8; }
+.op-delete:hover { background: rgba(185, 83, 57, 0.15); color: #b95339; }
+
+/* --- Analytics Styles --- */
 .analytics-layout {
 	display: grid;
 	gap: 18px;
@@ -636,15 +841,16 @@ h1 {
 	stroke-dashoffset: 0;
 	transition: stroke-dashoffset 1s linear;
 }
-#completionPercent{
-    font-size:24px;
-    font-weight:bold;
+
+#completionPercent {
+	font-size: 24px;
+	font-weight: bold;
 }
 
-canvas{
-    width:100% !important;
-    max-height:300px;
-    margin-top:20px;
+canvas {
+	width: 100% !important;
+	max-height: 300px;
+	margin-top: 20px;
 }
 
 .timer-time {

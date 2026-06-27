@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="style.css">
 	<script src="js/timer.js" defer></script>
 	<script src="js/analytics.js" defer></script>
+	<script src="js/streak.js" defer></script>
 	<script src="js/app.js" defer></script>
 </head>
 
@@ -104,53 +105,10 @@
 			</header>
 
 			<div class="dashboard-grid">
-				<article class="panel panel-large advanced-tracker" id="today-panel">
-					<header class="tracker-header">
-						<div>
-							<h3>My Routines</h3>
-							<p class="tracker-instructions">Organize, prioritize, and track your daily rhythm.</p>
-						</div>
-						<div class="progress-ring-box">
-							<svg class="progress-ring" width="54" height="54">
-								<circle class="progress-ring__circle-bg" stroke="var(--border)" stroke-width="4" fill="transparent" r="22" cx="27" cy="27"/>
-								<circle class="progress-ring__circle" id="tracker-progress-ring" stroke="var(--accent)" stroke-width="4" fill="transparent" r="22" cx="27" cy="27"/>
-							</svg>
-							<span id="progress-text">0%</span>
-						</div>
-					</header>
-
-					<div class="habit-form-deck" id="habit-form-deck">
-						<input type="hidden" id="edit-target-id" value="">
-						
-						<div class="input-row-main">
-							<input type="text" id="new-habit-input" placeholder="What habit are we working on?..." autocomplete="off">
-							<button id="add-habit-btn" class="action-submit-btn">Add</button>
-						</div>
-						
-						<div class="input-row-meta">
-							<div class="meta-field">
-								<label for="habit-category">Category</label>
-								<select id="habit-category">
-									<option value="Health">🏥 Health</option>
-									<option value="Study">📚 Study</option>
-									<option value="Fitness">💪 Fitness</option>
-								</select>
-							</div>
-							<div class="meta-field">
-								<label for="habit-priority">Priority</label>
-								<select id="habit-priority">
-									<option value="1">🔴 High</option>
-									<option value="2" selected>🟡 Medium</option>
-									<option value="3">🔵 Low</option>
-								</select>
-							</div>
-							<button id="cancel-edit-btn" class="hidden-btn">Cancel Edit</button>
-						</div>
-					</div>
-
-					<div id="habit-list" class="sortable-list"></div>
+				<article class="panel panel-large">
+					<h3>Today</h3>
+					<p>Today's summary, checklist, and quick progress snapshot.</p>
 				</article>
-
 				<article class="panel" id="timer-panel">
 					<h3>Focus Timer</h3>
 
@@ -173,29 +131,100 @@
 					</div>
 					<p class="timer-expand-hint" aria-hidden="true">⤢ Click to expand</p>
 				</article>
+				<article class="panel streak-panel" id="streak-panel">
+					<div class="streak-panel-header">
+						<h3>Streaks</h3>
+						<span id="streak-badge" class="streak-badge">🏆 Longest</span>
+					</div>
 
-				<article class="panel">
-					<h3>Streaks</h3>
-					<p>Keep consistency visible.</p>
+					<!-- Stat row -->
+					<div class="streak-stats">
+						<div class="streak-stat">
+							<strong id="streak-current">—</strong>
+							<span>Current<br>Streak</span>
+						</div>
+						<div class="streak-stat streak-stat-accent">
+							<strong id="streak-longest">—</strong>
+							<span>Longest<br>Streak</span>
+						</div>
+						<div class="streak-stat">
+							<strong id="streak-total">—</strong>
+							<span>Active<br>Days</span>
+						</div>
+						<div class="streak-stat">
+							<strong id="streak-rate">—</strong>
+							<span>This<br>Week</span>
+						</div>
+					</div>
+
+					<!-- Demo toggle -->
+					<button id="streak-demo-btn" class="streak-demo-btn" title="Toggle today's activity for demo">
+						Toggle Today ✦
+					</button>
 				</article>
 				<article class="panel">
 					<h3>Mood</h3>
 					<p>Record how the day feels.</p>
 				</article>
-				
 				<article class="panel panel-wide" id="analytics-panel">
 					<h3>Analytics</h3>
-					<p>Habit Completion: <span id="completionPercent">0%</span></p>
-					<canvas id="weeklyChart"></canvas>
-					<br><br>
-					<canvas id="focusChart"></canvas>
-					<br><br>
-					<canvas id="moodChart"></canvas>
+					<p>Use this area for charts, stats, and longer-term trend insights.</p>
 				</article>
 			</div>
 		</section>
 	</main>
 
+	<!-- STREAK DEEP-DIVE — Heatmap + Monthly View -->
+	<section id="streak-section" class="dashboard-card streak-section" aria-labelledby="streak-section-title">
+		<header class="dashboard-header">
+			<div>
+				<p class="dashboard-kicker">Contribution History</p>
+				<h3 id="streak-section-title">Your activity at a glance.</h3>
+			</div>
+		</header>
+
+		<!-- GitHub-style heatmap -->
+		<div class="heatmap-wrap">
+			<div class="heatmap-scroll">
+				<div class="hm-day-labels" aria-hidden="true">
+					<span>Mon</span>
+					<span>Tue</span>
+					<span>Wed</span>
+					<span>Thurs</span>
+					<span>Fri</span>
+					<span>Sat</span>
+					<span>Sun</span>
+				</div>
+				<div class="hm-body">
+					<div class="hm-month-labels" id="streak-month-labels"></div>
+					<div class="hm-grid" id="streak-heatmap-grid" role="grid" aria-label="Activity heatmap"></div>
+				</div>
+			</div>
+			<div class="hm-legend" aria-label="Activity intensity legend">
+				<span class="hm-legend-label">Less</span>
+				<div class="hm-cell hm-level-0"></div>
+				<div class="hm-cell hm-level-1"></div>
+				<div class="hm-cell hm-level-2"></div>
+				<div class="hm-cell hm-level-3"></div>
+				<span class="hm-legend-label">More</span>
+			</div>
+		</div>
+
+		<!-- Monthly calendar view -->
+		<div class="monthly-view">
+			<div class="monthly-nav">
+				<button id="streak-month-prev" class="ghost-button mv-nav-btn" aria-label="Previous month">&#8592;</button>
+				<h4 id="streak-month-title" class="monthly-title"></h4>
+				<button id="streak-month-next" class="ghost-button mv-nav-btn" aria-label="Next month">&#8594;</button>
+			</div>
+			<div class="monthly-grid" id="streak-monthly-grid" role="grid" aria-label="Monthly activity calendar"></div>
+		</div>
+	</section>
+
+
+	<!-- STREAK DEEP-DIVE done -->
+
+	<!-- Focus Timer Expanded Overlay -->
 	<div class="timer-overlay" id="timer-overlay" role="dialog" aria-modal="true" aria-label="Focus Timer">
 		<div class="timer-modal" id="timer-modal">
 			<button class="timer-modal-close" id="timer-overlay-close" aria-label="Close focus timer">✕</button>
@@ -223,8 +252,5 @@
 			<p class="timer-modal-status" id="timer-modal-status">Ready when you are.</p>
 		</div>
 	</div>
-
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
-
 </html>
